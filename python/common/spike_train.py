@@ -22,7 +22,10 @@ class SpikeTrain(object):
         :return: an array of spike counts
         """
         interval_sec = interval / 1000.
-        return np.diff([np.count_nonzero(self.spikes < t) for t in np.arange(0, self.duration, interval_sec)])
+        right_boundary = np.arange(0, self.duration, interval_sec)
+        if(right_boundary[-1]<self.duration):
+            right_boundary = np.hstack((right_boundary, self.duration+1))
+        return np.diff([np.count_nonzero(self.spikes < t) for t in right_boundary])
 
     def interspike_intervals(self):
         """
