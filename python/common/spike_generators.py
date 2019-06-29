@@ -35,7 +35,7 @@ def poisson_time_dependent_rate(duration, rate_fn, max_rate):
     # rejection
     times_retained = [times[0]]
     for i in range(1, len(times)):
-        if rate_fn(times[i], times[i - 1]) / max_rate >= np.random.rand():
+        if rate_fn(times[i], times_retained[-1]) / max_rate >= np.random.rand():
             times_retained.append(times[i])
     return np.asarray(times_retained)
 
