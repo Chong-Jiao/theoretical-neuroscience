@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import numpy as np
 
-from spike_train import SpikeTrain
+from common.spike_train import SpikeTrain
 
 
 def poisson_constant_rate(duration, rate):
@@ -11,7 +11,7 @@ def poisson_constant_rate(duration, rate):
     Poisson process with constant firing rate
     :param rate: constant firing rate
     :param duration: duration
-    :return:
+    :return: time of occurences
     """
     # we don't try to be smart here. Just do a straightforward loop
     times = [0]
@@ -27,7 +27,7 @@ def poisson_time_dependent_rate(duration, rate_fn, max_rate):
     :param duration:
     :param rate_fn: r_est(time, previous_time)
     :param max_rate:
-    :return:
+    :return: time of occurences
     """
     # implement rejection sampling: first generate with max_rate
     times = poisson_constant_rate(duration, max_rate)
