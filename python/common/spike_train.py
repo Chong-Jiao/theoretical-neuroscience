@@ -63,7 +63,7 @@ class SpikeTrain(object):
         intervals = self.interspike_intervals()
         return np.diff([np.count_nonzero(intervals < (t / 1000.)) for t in [0] + list(bins)]) / float(intervals.size)
 
-    def autocorrelation(self, bin_size):
+    def autocorrelation(self, bin_size, bin_count):
         """
 
         :param bin_size: int, size of a bin in the histogram, in seconds
@@ -71,13 +71,12 @@ class SpikeTrain(object):
         :return: x, y
         """
         # page 28 textbook
-        max_m = int(self.duration/bin_size+0.5)
-        vals = [0] * (max_m+1)
+        vals = [0] * bin_count
         for t1 in self.spikes:
             for t2 in self.spikes:
                 m = int(np.floor(np.abs(t1 - t2) / bin_size)+0.5)
-                if m < max_m:
+                if m < bin_count:
                     vals[m] += 1
         v = (np.asarray(vals, dtype=np.float) / self.duration)
         v -= (len(self.spikes) * len(self.spikes) * bin_size) / (self.duration * self.duration)
-        return (np.arange( max_m+1)) * bin_size, v
+        return (np.arange( bin_count)) * bin_size, v

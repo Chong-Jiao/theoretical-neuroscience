@@ -12,6 +12,7 @@ class TestSpikeTrain(unittest.TestCase):
     def test_autocorrelation(self):
         st = SpikeTrain(np.array([1,2]), 2)
         binsize = 1
-        bins, v= st.autocorrelation(binsize)
-        self.assertListEqual(bins.tolist(), [0,1,2])
-        self.assertListEqual(v.tolist(),[0,0,-1] )
+        bincount = 2
+        bins, v= st.autocorrelation(binsize,bincount)
+        self.assertListEqual(bins.tolist(), [0,1])
+        self.assertListEqual(v.tolist(),[0,0] )
