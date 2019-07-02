@@ -2,12 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from common.sampled_series_generator import *
+from common.response_estimator import *
+from common.basic_functions import *
+
 import matplotlib.pyplot as plt
 
 deltaT = 10 # in ms
 fs = 1000/deltaT
 sigma = np.sqrt(10)
 duration = 10
+r0 = 50
 
 def D(tau):
     '''
@@ -17,8 +21,18 @@ def D(tau):
 
 s = GaussWhiteNoiseGenerator(duration,fs,sigma).generate()
 
-tau = np.linspace(0,300, 500)
-y = D(tau)
+r = r0+estimate_response_with_linear_kernel(s.series, D, deltaT)
 
-plt.plot(tau, y)
+lags = np.array(range(15),dtype=np.int16)
+
+qrs,_ = xcorr(s.series,r, lags=lags)
+
+plt.figure()
+plt.plot(lags*deltaT, D(lags*deltaT))
+plt.plot(lags*deltaT,deltaT/1000*qrs/(sigma**2))
+plt.legend((r'$D(\tau)$', r'$Q_{rs}(\tau)/\sigma^2$'))
+plt.xlabel(r'$\tau$ (ms)')
+plt.title(r'The comparison of $D(\tau)$ and $Q_{rs}(\tau)/\sigma^2$')
+plt.yticks(ticks=[-1,-0.5,0,0.5,1])
+plt.ylim([-1,1])
 plt.show()

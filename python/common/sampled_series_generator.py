@@ -2,7 +2,7 @@ import numpy as np
 import common.sampled_series as s_series
 def gauss_white_noise(duration, deltaT, sigma):
     N = int(duration/deltaT)+1
-    return np.random.randn(N,1)*sigma/np.sqrt(deltaT)
+    return np.random.randn(N)*sigma/np.sqrt(deltaT)
 
 class GaussWhiteNoiseGenerator(object):
     def __init__(self, duration, fs, sigma):
