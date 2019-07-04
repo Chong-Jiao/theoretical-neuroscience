@@ -30,6 +30,6 @@ def plot_interspike_interval_histogram(spikes, min_time=1, max_time=100,
 def plot_autocorrelation_histogram(spikes, bin_size, bin_count, figsize=None, title='Autocorrelation histogram'):
     x, y = spikes.autocorrelation(bin_size, bin_count)
     plt.figure(figsize=figsize)
-    plt.bar(x, y, width=1, bottom=0)
+    plt.bar(x*1000, y, width=1, bottom=0)
     plt.title(title, loc='left')
     plt.xlabel('time (ms)')
